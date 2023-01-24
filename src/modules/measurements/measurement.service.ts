@@ -7,6 +7,7 @@ import { UpdateMeasurementDto } from './dto/update.dto';
 import { GetMeasurementDto } from './dto/get.dto';
 
 import { Measurement } from './entities/measurement.entity';
+import { MESSAGES } from '@/helpers/messages';
 
 @Injectable()
 export class MesurementService {
@@ -57,15 +58,69 @@ export class MesurementService {
     }
   }
 
-  create(createTypeDto: CreateMeasurementDto) {
-    return null;
+  async create(dto: CreateMeasurementDto) {
+    try {
+      const measurement = await this.measurementRepo.save({
+        ...dto,
+      });
+      return measurement;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  update(id: string, updateTypeDto: UpdateMeasurementDto) {
-    return null;
+  async update(id: string, dto: UpdateMeasurementDto) {
+    try {
+      const measurement = await this.measurementRepo.findOne({
+        relations: ['gauge'],
+        where: {
+          id,
+        },
+      });
+      if (!measurement) {
+        throw new HttpException(
+          MESSAGES.MSG_NOT_FOUND('Measurement'),
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const newMeasurement = await this.measurementRepo.save({
+        id: measurement.id,
+        ...dto,
+      });
+      return newMeasurement;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} type`;
+  async remove(id: string) {
+    try {
+      const deleteResponse = await this.measurementRepo.softDelete(id);
+      if (!deleteResponse.affected) {
+        throw new HttpException(
+          MESSAGES.MSG_NOT_FOUND('Measurement'),
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      return HttpStatus.OK;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async hardRemove(id: string) {
+    try {
+      const deleteResponse = await this.measurementRepo.delete(id);
+      if (!deleteResponse.affected) {
+        throw new HttpException(
+          MESSAGES.MSG_NOT_FOUND('Measurement'),
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      return HttpStatus.OK;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

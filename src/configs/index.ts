@@ -13,5 +13,6 @@ export const DATABASE_CONFIG = {
   password: process.env.DATABASE_PASSWORD || '',
 };
 
+export const APP_URL = process.env.APP_URL;
+export const API_PREFIX = `/api/${process.env.APP_VERSION}`;
 export const FRONTEND_HOST = process.env.HOST_NAME;
-export const API_PREFIX = `${process.env.VERSION}/api`;

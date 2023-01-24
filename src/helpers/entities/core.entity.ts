@@ -1,6 +1,4 @@
-import { Type } from 'class-transformer';
 import {
-  Column,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   CreateDateColumn,

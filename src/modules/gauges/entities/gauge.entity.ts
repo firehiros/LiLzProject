@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, OneToMany } from 'typeorm';
 import { CoreEntity } from '@helpers/entities/core.entity';
 import { Measurement } from '@/modules/measurements/entities/measurement.entity';
 
@@ -11,6 +11,9 @@ export class Gauge extends CoreEntity {
   })
   name: string;
 
-  @OneToMany(() => Measurement, (measurement) => measurement.gauge)
+  @OneToMany(() => Measurement, (measurement) => measurement.gauge, {
+    cascade: true,
+  })
+  @JoinTable()
   measurements?: Measurement[];
 }

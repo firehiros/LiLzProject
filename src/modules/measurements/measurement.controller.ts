@@ -13,7 +13,7 @@ import { CreateMeasurementDto } from './dto/create.dto';
 import { UpdateMeasurementDto } from './dto/update.dto';
 import { GetMeasurementDto } from './dto/get.dto';
 
-@Controller('measurement')
+@Controller('measurements')
 export class MeasurementController {
   constructor(private readonly service: MesurementService) {}
 

@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "Lilz Project",
+      "script": "./dist/src/main.js",
+      "merge_logs": true
+    }
+  ]
+}

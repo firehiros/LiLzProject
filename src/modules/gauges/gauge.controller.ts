@@ -13,7 +13,7 @@ import { CreateGaugeDto } from './dto/create.dto';
 import { UpdateGaugeDto } from './dto/update.dto';
 import { GetGaugeDto } from './dto/get.dto';
 
-@Controller('gauge')
+@Controller('gauges')
 export class GaugeController {
   constructor(private readonly service: GaugeService) {}
 

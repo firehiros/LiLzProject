@@ -11,4 +11,4 @@ import { Measurement } from '@/modules/measurements/entities/measurement.entity'
   controllers: [GaugeController],
   providers: [GaugeService],
 })
-export class MeasurementModule {}
+export class GaugeModule {}

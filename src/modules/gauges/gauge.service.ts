@@ -7,6 +7,7 @@ import { UpdateGaugeDto } from './dto/update.dto';
 import { GetGaugeDto } from './dto/get.dto';
 
 import { Gauge } from './entities/gauge.entity';
+import { MESSAGES } from '@/helpers/messages';
 
 @Injectable()
 export class GaugeService {
@@ -32,7 +33,6 @@ export class GaugeService {
       }
 
       const result = await this.gaugeRepo.find({
-        relations: ['measurements'],
         order: { created_at: 'DESC' },
       });
 
@@ -45,7 +45,6 @@ export class GaugeService {
   async findOne(id: string): Promise<Gauge> {
     try {
       const ret = await this.gaugeRepo.findOne({
-        relations: ['measurements'],
         where: {
           id,
         },
@@ -57,15 +56,69 @@ export class GaugeService {
     }
   }
 
-  create(createTypeDto: CreateGaugeDto) {
-    return null;
+  async create(dto: CreateGaugeDto) {
+    try {
+      const gauge = await this.gaugeRepo.save({
+        ...dto,
+      });
+      return gauge;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  update(id: string, updateTypeDto: UpdateGaugeDto) {
-    return null;
+  async update(id: string, dto: UpdateGaugeDto) {
+    try {
+      const gauge = await this.gaugeRepo.findOne({
+        relations: ['measurements'],
+        where: {
+          id,
+        },
+      });
+      if (!gauge) {
+        throw new HttpException(
+          MESSAGES.MSG_NOT_FOUND('Gauge'),
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      const newGauge = await this.gaugeRepo.save({
+        id: gauge.id,
+        ...dto,
+      });
+
+      return newGauge;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} type`;
+  async remove(id: string) {
+    try {
+      const deleteResponse = await this.gaugeRepo.softDelete(id);
+      if (!deleteResponse.affected) {
+        throw new HttpException(
+          MESSAGES.MSG_NOT_FOUND('Gauge'),
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      return HttpStatus.OK;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async hardRemove(id: string) {
+    try {
+      const deleteResponse = await this.gaugeRepo.delete(id);
+      if (!deleteResponse.affected) {
+        throw new HttpException(
+          MESSAGES.MSG_NOT_FOUND('Gauge'),
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      return HttpStatus.OK;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

@@ -2,9 +2,10 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
-import { LoggerMiddleware } from './helpers/middlewares';
-import { typeOrmConfig } from './configs/db.config';
-import { UsersModule } from '@shop/users/users.module';
+import { LoggerMiddleware } from '@helpers/middlewares';
+import { typeOrmConfig } from '@configs/db.config';
+import { MeasurementModule } from '@/modules/measurements/measurement.module';
+import { GaugeModule } from '@/modules/gauges/gauge.module';
 
 @Module({
   imports: [
@@ -12,6 +13,8 @@ import { UsersModule } from '@shop/users/users.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    GaugeModule,
+    MeasurementModule,
   ],
   controllers: [],
   providers: [],

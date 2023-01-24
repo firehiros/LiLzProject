@@ -22,7 +22,7 @@ async function bootstrap() {
     .setDescription('This is a detail specification of API Swagger')
     .setVersion('1.0')
     .addBearerAuth()
-    .addServer('/api/v1')
+    .addServer(API_PREFIX)
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
@@ -32,7 +32,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new TimeoutInterceptor());
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   app.useGlobalFilters(new HttpExceptionFilter());
 

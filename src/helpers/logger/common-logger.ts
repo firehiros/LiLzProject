@@ -8,20 +8,20 @@ export class CommonLogger extends Logger {
 
   constructor(context?: string) {
     super(context);
-    // const winstonTransports = new winston.transports.DailyRotateFile({
-    //   filename: '%DATE%.log',
-    //   dirname: './logs/',
-    //   datePattern: 'YYYY-MM-DD',
-    //   maxSize: '10m',
-    //   maxFiles: '7d',
-    //   format: winston.format.combine(
-    //     winston.format.timestamp(),
-    //     winston.format.json(),
-    //   ),
-    // });
-    // this.winstonLogger = winston.createLogger({
-    //   transports: winstonTransports,
-    // });
+    const winstonTransports = new winston.transports.DailyRotateFile({
+      filename: '%DATE%.log',
+      dirname: './logs/',
+      datePattern: 'YYYY-MM-DD',
+      maxSize: '10m',
+      maxFiles: '7d',
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+      ),
+    });
+    this.winstonLogger = winston.createLogger({
+      transports: winstonTransports,
+    });
   }
 
   customError(message: string, trace: string, log: ILog) {

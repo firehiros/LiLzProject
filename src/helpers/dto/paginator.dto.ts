@@ -1,5 +1,4 @@
-export class Paginator<T> {
-  data: T[];
+export class PaginatorInfo {
   count: number;
   current_page: number;
   firstItem: number;
@@ -11,4 +10,8 @@ export class Paginator<T> {
   last_page_url: string;
   next_page_url: string;
   prev_page_url: string;
+}
+
+export class Paginator<T> extends PaginatorInfo {
+  data: T[];
 }
