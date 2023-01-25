@@ -19,6 +19,7 @@ RUN npm install -g pm2
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/ecosystem.json ./ecosystem.json
 COPY --from=builder /usr/src/app/package.json ./package.json
+COPY --from=builder /usr/src/app/.env ./.env
 
 RUN npm install
 

@@ -92,9 +92,6 @@ $ docker compose up
 # unit tests
 $ npm run test
 
-# e2e tests
-$ npm run test:e2e
-
 # test coverage
 $ npm run test:cov
 ```
@@ -151,11 +148,7 @@ git push heroku main
 
 ### Swagger
 
-```bash
-# API, Swagger - src/swagger.ts
-npm run doc:api #> http://localhost:3000/api
-```
-
+- Visit http://localhost:5000/api-swagger
 - This project ultilize <a href='https://docs.nestjs.com/openapi/cli-plugin'> NestJS's CLI Plugin </a>.
 - Please aware that there is no need to put `@ApiProperty` decorator for every DTOs properties. For more information, please visit the link above.
 

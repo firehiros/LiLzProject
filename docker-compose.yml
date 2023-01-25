@@ -1,0 +1,52 @@
+version: '3'
+services: 
+  # MySQL
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lilz
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - 3306:3306
+    networks:
+      - lilz_network
+
+  # phpMyAdmin
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOSTS=host.docker.internal
+    - PMA_USER=root
+    - PMA_PASSWORD=root
+    ports:
+    - 8080:80
+    networks:
+      - lilz_network
+    depends_on:
+      - db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lilz_app
+    container_name: lilz_app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - .:/var/www/
+    ports:
+      - "5000:5000"
+    networks:
+      - lilz_network
+
+networks:
+  lilz_network:
+    driver: bridge
