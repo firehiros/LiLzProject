@@ -32,7 +32,7 @@ $ npm install
 
 - This template use <a href="https://typeorm.io/#/">TypeORM</a> as Object–relational mapping library.
 - TypeORM supports many database programs.
-- Detail configuration can be done in `src/configs/database/typeorm.config.ts`.
+- Detail configuration can be done in `src/configs/db.config.ts`.
 - By default, the project is configured to use MySQL relational database management system.
 
 ### Intantiate a module
